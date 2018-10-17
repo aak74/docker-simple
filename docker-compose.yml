@@ -1,0 +1,41 @@
+version: '2'
+
+services:
+
+    nginx:
+        build: ./containers/nginx
+        # container_name: nginx
+        ports:
+            - 80:80
+        volumes:
+            - ./src:/var/www/html
+            - ./logs/nginx:/var/log/nginx
+        restart: always
+
+    app:
+        build: ./containers/apache2
+        container_name: app
+        depends_on:
+            - db
+        ports:
+            - 8000:80
+        volumes:
+            - ./src:/var/www/html
+            - ./logs/apache2:/var/log/apache2
+            - ./logs/php:/var/log/php
+        restart: always
+
+    db:
+        build: ./containers/mariadb
+        container_name: db
+        # ports:
+        #     - '3306:3306'
+        environment:
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        volumes:
+            - ./logs/mariadb:/var/log/mysql
+            - ./data/mariadb:/var/lib/mysql
+        restart: always
