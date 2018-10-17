@@ -27,7 +27,7 @@ services:
 
     db:
         build: ./containers/mariadb
-        container_name: db
+        # container_name: db
         # ports:
         #     - '3306:3306'
         environment:
@@ -38,4 +38,5 @@ services:
         volumes:
             - ./logs/mariadb:/var/log/mysql
             - ./data/mariadb:/var/lib/mysql
+            - ./data/backup:/backup
         restart: always

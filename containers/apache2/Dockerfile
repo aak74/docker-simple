@@ -26,18 +26,9 @@ ENV APACHE_RUN_USER=www-data \
     APACHE_RUN_DIR=/var/run/apache2 \
     APACHE_PID_FILE=/var/run/apache2.pid 
 
-COPY ./conf/conf-available/* /etc/apache2/conf-available/
-COPY ./conf/php.ini /etc/php/7.0/apache2/php.ini
-COPY ./conf/php.ini /etc/php/7.0/cli/php.ini
-
-COPY ./conf/conf-available/* /etc/apache2/conf-available/
-COPY ./conf/mods-available/* /etc/apache2/mods-available/
-COPY ./conf/sites-available/* /etc/apache2/sites-available/
+COPY ./rootfs /
 
 RUN a2enmod remoteip && a2enconf remoteip && a2enmod php7.0 && a2enmod rewrite 
-#ADD http://www.1c-bitrix.ru/download/scripts/bitrixsetup.php /var/www/html
-#ADD http://www.1c-bitrix.ru/download/scripts/restore.php /var/www/html/
-#RUN chown -R www-data:www-data /var/www/html && chown -R www-data:www-data /var/lib/php
 
 RUN usermod -u 1000 www-data
 
